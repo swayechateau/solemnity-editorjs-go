@@ -4,7 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"solemnity-editorjs-go/editorjs"
+
+	"github.com/swayechateau/solemnity-editorjs-go/editorjs"
 )
 
 func main() {

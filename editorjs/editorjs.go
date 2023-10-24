@@ -1,8 +1,9 @@
 package editorjs
 
 import (
-	"solemnity-editorjs-go/blocks"
 	"strings"
+
+	"github.com/swayechateau/solemnity-editorjs-go/blocks"
 )
 
 // Block represents a single block of content in Editor.js JSON.
