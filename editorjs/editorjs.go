@@ -1,6 +1,8 @@
 package editorjs
 
 import (
+	"encoding/json"
+	"fmt"
 	"strings"
 
 	"github.com/swayechateau/solemnity-editorjs-go/blocks"
@@ -47,6 +49,39 @@ func (e *JsonEditorJs) ToEditorJs() EditorJs {
 	return editorJs
 }
 
-// func Convert() string {
+func ConvertToEditorJs(data interface{}) (EditorJs, error) {
+	editorJs, err := Convert(data)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return editorJs.ToEditorJs(), err
+	}
+	return editorJs.ToEditorJs(), nil
+}
 
-// }
+func Convert(data interface{}) (JsonEditorJs, error) {
+	var editorJs JsonEditorJs
+
+	var err error
+	var bytes []byte
+	bytes, err = toJson(data)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return editorJs, err
+	}
+	err = json.Unmarshal(bytes, &editorJs)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return editorJs, err
+	}
+	return editorJs, nil
+}
+
+func toJson(p interface{}) ([]byte, error) {
+	bytes, err := json.Marshal(p)
+	if err != nil {
+		fmt.Println(err)
+		return bytes, err
+	}
+
+	return bytes, nil
+}
