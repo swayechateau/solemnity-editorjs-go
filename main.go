@@ -125,6 +125,19 @@ var jsonData = `{
             }
         },
         {
+            "type": "code",
+            "data": {
+                "code": "Code Block"
+            }
+        },
+        {
+            "type": "embed",
+            "data": {
+                "service": "youtube",
+                "source": "https://www.youtube.com/embed/6OctHLex_Io?si=zKUGNwi53viSq_7P"
+            }
+        },
+        {
             "id": "hZAjSnqYMX",
             "type": "image",
             "data": {
@@ -135,6 +148,54 @@ var jsonData = `{
                 "withBackground": false,
                 "stretched": true,
                 "caption": "CodeX Code Camp 2019"
+            }
+        },
+        {
+            "type": "list",
+            "data": {
+                "style": "unordered",
+                "items": [
+                    "Unordered List",
+                    "Unordered List",
+                    "Unordered List"
+                ]
+            }
+        },
+        {
+            "type": "list",
+            "data": {
+                "style": "ordered",
+                "items": [
+                    "Ordered List",
+                    "Ordered List",
+                    "Ordered List"
+                ]
+            }
+        },
+        {
+            "type": "linkTool",
+            "data": {
+                "text": "Link",
+                "link": "#"
+            }
+        },
+        {
+            "type": "code",
+            "data": {
+                "code": "Code"
+            }
+        },
+        {
+            "type": "image",
+            "data": {
+                "url": "https://via.placeholder.com/150",
+                "caption": "placeholder"
+            }
+        },
+        {
+            "type": "quote",
+            "data": {
+                "text": "Blockquote"
             }
         }
     ]

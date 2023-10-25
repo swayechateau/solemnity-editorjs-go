@@ -80,6 +80,25 @@ func (b *JsonBlock) ToBlock() Block {
 		data = MapToFile(b.Data)
 	case "attaches":
 		data = MapToAttaches(b.Data)
+	case "code":
+		data = MapToCode(b.Data)
+	case "quote":
+		data = MapToQuote(b.Data)
+	case "linkTool", "link":
+		data = MapToLink(b.Data)
+	// case "delimiter":
+	// 	data = MapToDelimiter(b.Data)
+	// case "raw":
+	// 	data = MapToRaw(b.Data)
+	case "embed":
+		data = MapToEmbed(b.Data)
+		// case "warning":
+		// 	data = MapToWarning(b.Data)
+		// case "marker":
+		// 	data = MapToMarker(b.Data)
+		// case "checklist":
+		// 	data = MapToChecklist(b.Data)
+
 	}
 	log.Println(data)
 	return Block{

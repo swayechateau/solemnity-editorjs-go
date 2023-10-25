@@ -1,5 +1,9 @@
 package blocks
 
+import (
+	"log"
+)
+
 type List struct {
 	Items []string `json:"items"`
 	Style string   `json:"type"`
@@ -24,11 +28,22 @@ func listTag(style string) string {
 }
 
 func MapToList(data map[string]interface{}) List {
-	items := data["items"].([]interface{})
 	var list List
+	style := "unordered"
+	if data["style"] != nil {
+		style = data["style"].(string)
+	}
+	if data["type"] != nil {
+		style = data["type"].(string)
+	}
+	list.Style = style
+
+	log.Printf("list.Style: %s", list.Style)
+	items := data["items"].([]interface{})
+
 	for _, item := range items {
 		list.Items = append(list.Items, item.(string))
 	}
-	list.Style = data["type"].(string)
+
 	return list
 }
