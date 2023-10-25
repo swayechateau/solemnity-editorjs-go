@@ -28,7 +28,12 @@ func (t Table) ToHtml() string {
 
 func MapToTable(data map[string]interface{}) Table {
 	var table Table
-	table.WithHeadings = data["withHeadings"].(bool)
+	withHeadings := false
+	if data["withHeadings"] != nil {
+		withHeadings = data["withHeadings"].(bool)
+	}
+
+	table.WithHeadings = withHeadings
 	var content [][]string
 	for _, row := range data["content"].([]interface{}) {
 		var cells []string
