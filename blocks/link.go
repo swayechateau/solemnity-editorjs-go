@@ -6,9 +6,17 @@ type Link struct {
 }
 
 func MapToLink(data map[string]interface{}) Link {
+	link := "#"
+	text := ""
+	if data["text"] != nil {
+		text = data["text"].(string)
+	}
+	if data["link"] != nil {
+		link = data["link"].(string)
+	}
 	return Link{
-		Text: data["text"].(string),
-		Link: data["link"].(string),
+		Text: text,
+		Link: link,
 	}
 }
 
