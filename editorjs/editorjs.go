@@ -15,12 +15,6 @@ type EditorJs struct {
 	Version string         `json:"version"`
 }
 
-type JsonEditorJs struct {
-	Time    int64              `json:"time"`
-	Blocks  []blocks.JsonBlock `json:"blocks"`
-	Version string             `json:"version"`
-}
-
 func (e *EditorJs) ToHtml() string {
 	var html strings.Builder
 	for _, block := range e.Blocks {
@@ -29,15 +23,31 @@ func (e *EditorJs) ToHtml() string {
 	return html.String()
 }
 
-func (e *JsonEditorJs) ToHtml() string {
-	var html strings.Builder
-	for _, block := range e.Blocks {
-		html.WriteString(block.ToHtml())
+func Convert(data interface{}) (EditorJs, error) {
+	editorJs, err := fromInterface(data)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return editorJs.toEditorJs(), err
 	}
-	return html.String()
+	return editorJs.toEditorJs(), nil
 }
 
-func (e *JsonEditorJs) ToEditorJs() EditorJs {
+func ConvertJson(bytes []byte) (EditorJs, error) {
+	e, err := fromJson(bytes)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return e.toEditorJs(), err
+	}
+	return e.toEditorJs(), nil
+}
+
+type jsonEditorJs struct {
+	Time    int64              `json:"time"`
+	Blocks  []blocks.JsonBlock `json:"blocks"`
+	Version string             `json:"version"`
+}
+
+func (e *jsonEditorJs) toEditorJs() EditorJs {
 	var editorJs EditorJs
 	var blocks []blocks.Block
 	editorJs.Time = e.Time
@@ -49,17 +59,8 @@ func (e *JsonEditorJs) ToEditorJs() EditorJs {
 	return editorJs
 }
 
-func ConvertToEditorJs(data interface{}) (EditorJs, error) {
-	editorJs, err := Convert(data)
-	if err != nil {
-		fmt.Println("Error:", err)
-		return editorJs.ToEditorJs(), err
-	}
-	return editorJs.ToEditorJs(), nil
-}
-
-func Convert(data interface{}) (JsonEditorJs, error) {
-	var editorJs JsonEditorJs
+func fromInterface(data interface{}) (jsonEditorJs, error) {
+	var editorJs jsonEditorJs
 
 	var err error
 	var bytes []byte
@@ -68,7 +69,7 @@ func Convert(data interface{}) (JsonEditorJs, error) {
 		fmt.Println("Error:", err)
 		return editorJs, err
 	}
-	err = json.Unmarshal(bytes, &editorJs)
+	editorJs, err = fromJson(bytes)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return editorJs, err
@@ -84,4 +85,14 @@ func toJson(p interface{}) ([]byte, error) {
 	}
 
 	return bytes, nil
+}
+
+func fromJson(bytes []byte) (jsonEditorJs, error) {
+	var editorJs jsonEditorJs
+	err := json.Unmarshal(bytes, &editorJs)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return editorJs, err
+	}
+	return editorJs, nil
 }
