@@ -11,6 +11,10 @@ type BlockData interface {
 	ToMarkdown() string
 }
 
+type Tune struct {
+	Footnotes []string `json:"footnotes,omitempty"`
+}
+
 type Block struct {
 	Id    string    `json:"id,omitempty"`
 	Type  string    `json:"type"`
@@ -18,49 +22,19 @@ type Block struct {
 	Tunes Tune      `json:"tunes,omitempty"`
 }
 
+func (b *Block) ToHtml() string {
+	return b.Data.ToHtml()
+}
+
+func (b *Block) ToMarkdown() string {
+	return b.Data.ToMarkdown()
+}
+
 type JsonBlock struct {
 	Id    string                 `json:"id,omitempty"`
 	Type  string                 `json:"type"`
 	Data  map[string]interface{} `json:"data"`
 	Tunes Tune                   `json:"tunes,omitempty"`
-}
-
-type Tune struct {
-	Footnotes []string `json:"footnotes,omitempty"`
-}
-
-func (b *Block) ToHtml() string {
-	switch b.Type {
-	case "paragraph":
-		p := b.Data.(Paragraph)
-		return p.ToHtml()
-	case "header":
-		h := b.Data.(Header)
-		return h.ToHtml()
-	case "list":
-		l := b.Data.(List)
-		return l.ToHtml()
-	case "table":
-		t := b.Data.(Table)
-		return t.ToHtml()
-	case "image":
-		i := b.Data.(Image)
-		return i.ToHtml()
-	case "attaches":
-		a := b.Data.(Attaches)
-		return a.ToHtml()
-	case "code":
-		c := b.Data.(Code)
-		return c.ToHtml()
-	case "quote":
-		q := b.Data.(Quote)
-		return q.ToHtml()
-	case "linkTool", "link":
-		l := b.Data.(Link)
-		return l.ToHtml()
-
-	}
-	return ""
 }
 
 func (b *JsonBlock) ToHtml() string {
