@@ -26,6 +26,17 @@ func (t Table) ToHtml() string {
 	return html
 }
 
+func (t Table) ToMarkdown() string {
+	markdown := ""
+	for _, row := range t.Content {
+		for _, cell := range row {
+			markdown += cell + " | "
+		}
+		markdown += "\n"
+	}
+	return markdown
+}
+
 func MapToTable(data map[string]interface{}) Table {
 	var table Table
 	withHeadings := false

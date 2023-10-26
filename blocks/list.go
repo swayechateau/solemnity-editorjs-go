@@ -18,6 +18,14 @@ func (l List) ToHtml() string {
 	return html
 }
 
+func (l List) ToMarkdown() string {
+	markdown := ""
+	for _, item := range l.Items {
+		markdown += "* " + item + "\n"
+	}
+	return markdown
+}
+
 func listTag(style string) string {
 	switch style {
 	case "ordered":

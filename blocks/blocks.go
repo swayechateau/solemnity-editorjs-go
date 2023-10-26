@@ -6,11 +6,16 @@ import (
 	"strings"
 )
 
+type BlockData interface {
+	ToHtml() string
+	ToMarkdown() string
+}
+
 type Block struct {
-	Id    string      `json:"id,omitempty"`
-	Type  string      `json:"type"`
-	Data  interface{} `json:"data"`
-	Tunes Tune        `json:"tunes,omitempty"`
+	Id    string    `json:"id,omitempty"`
+	Type  string    `json:"type"`
+	Data  BlockData `json:"data"`
+	Tunes Tune      `json:"tunes,omitempty"`
 }
 
 type JsonBlock struct {
@@ -38,6 +43,22 @@ func (b *Block) ToHtml() string {
 	case "table":
 		t := b.Data.(Table)
 		return t.ToHtml()
+	case "image":
+		i := b.Data.(Image)
+		return i.ToHtml()
+	case "attaches":
+		a := b.Data.(Attaches)
+		return a.ToHtml()
+	case "code":
+		c := b.Data.(Code)
+		return c.ToHtml()
+	case "quote":
+		q := b.Data.(Quote)
+		return q.ToHtml()
+	case "linkTool", "link":
+		l := b.Data.(Link)
+		return l.ToHtml()
+
 	}
 	return ""
 }
@@ -63,7 +84,7 @@ func (b *JsonBlock) ToHtml() string {
 }
 
 func (b *JsonBlock) ToBlock() Block {
-	var data interface{}
+	var data BlockData
 	log.Println(b.Type)
 	switch b.Type {
 	case "paragraph":
@@ -76,8 +97,6 @@ func (b *JsonBlock) ToBlock() Block {
 		data = MapToTable(b.Data)
 	case "image":
 		data = MapToImage(b.Data)
-	case "file":
-		data = MapToFile(b.Data)
 	case "attaches":
 		data = MapToAttaches(b.Data)
 	case "code":
