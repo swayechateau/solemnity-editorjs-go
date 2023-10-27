@@ -7,22 +7,15 @@ type Table struct {
 
 func (t Table) ToHtml() string {
 	html := "<table>"
+	header, body := t.Content[0], t.Content[1:]
+
 	if t.WithHeadings {
-		html += "<thead><tr>"
-		for _, heading := range t.Content[0] {
-			html += "<th>" + heading + "</th>"
-		}
-		html += "</tr></thead>"
+		html += genHeaders(header)
+		html += genBody(body)
+	} else {
+		html += genBody(t.Content)
 	}
-	html += "<tbody>"
-	for _, row := range t.Content {
-		html += "<tr>"
-		for _, cell := range row {
-			html += "<td>" + cell + "</td>"
-		}
-		html += "</tr>"
-	}
-	html += "</tbody></table>"
+	html += "</table>"
 	return html
 }
 
@@ -55,4 +48,27 @@ func MapToTable(data map[string]interface{}) Table {
 	}
 	table.Content = content
 	return table
+}
+
+func genHeaders(header []string) string {
+	html := "<thead><tr>"
+	for _, heading := range header {
+		html += "<th>" + heading + "</th>"
+	}
+	html += "</tr></thead>"
+
+	return html
+}
+
+func genBody(body [][]string) string {
+	html := "<tbody>"
+	for _, row := range body {
+		html += "<tr>"
+		for _, cell := range row {
+			html += "<td>" + cell + "</td>"
+		}
+		html += "</tr>"
+	}
+	html += "</tbody>"
+	return html
 }
